@@ -1,0 +1,13 @@
+import wollok.game.*
+import entidades.*
+import equipamento.*
+import niveles.*
+
+program juego {
+	game.title("Dungeon")
+	game.height(17)
+	game.width(30)
+	game.boardGround("assets/dungeon1.gif")
+	mainMenu.iniciar()
+	game.start()
+}

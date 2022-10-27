@@ -1,0 +1,85 @@
+import wollok.game.*
+import barravida.*
+import entidades.*
+import movimiento.*
+import niveles.*
+
+describe " Test del Nivel 1" {
+
+	fixture {
+		nivel1.iniciar(1)
+		//nivel1.spawnManager(1)
+	}
+
+	test "Maincharacter recibe daño" {
+		const vida = mainCharacter.vida()
+		mainCharacter.recibirDano(40)
+		const vidaActual = mainCharacter.vida()
+		assert.that(vida >= vidaActual)
+	}
+
+	test "Enemigo recibe daño" {
+		const vida = mainCharacter.enemigo().vida()
+		mainCharacter.enemigo().recibirDano(40)
+		const vidaActual = mainCharacter.enemigo().vida()
+		assert.that(vida >= vidaActual)
+	}
+
+	test "Maincharacter ataca a enemigo y recibe el daño" {
+		const vida = mainCharacter.enemigo().vida()
+		mainCharacter.atacar(mainCharacter.enemigo())
+		const vidaActual = mainCharacter.enemigo().vida()
+		assert.that(vida >= vidaActual)
+	}
+
+	test " MainCharacter se cura 15 y reduce stamina " {
+		mainCharacter.recibirDano(40)
+		assert.that(mainCharacter.stamina() == 3 )
+		const vida = mainCharacter.vida()
+		mainCharacter.curar()
+		assert.that(mainCharacter.stamina() == 2 )
+		assert.that(vida <= mainCharacter.vida())				
+	}
+	test " cambio imagen rojo y normal "{
+		assert.equals("assets/knight1.png",mainCharacter.image())
+		cambioImagen.roja(mainCharacter)
+		assert.equals("assets/knight1Rojo.png",mainCharacter.image())
+		cambioImagen.normal(mainCharacter)
+		assert.equals("assets/knight1.png",mainCharacter.image())
+		
+		}
+	test " cambio imagen gris y normal "{
+		assert.equals("assets/knight1.png",mainCharacter.image())
+		cambioImagen.gris(mainCharacter)
+		assert.equals("assets/knight1Gris.png",mainCharacter.image())
+		cambioImagen.normal(mainCharacter)
+		assert.equals("assets/knight1.png",mainCharacter.image())
+		
+		}
+	test "no cambia imagen gris si defiende "{
+		assert.equals("assets/knight1.png",mainCharacter.image())
+		cambioImagen.gris(mainCharacter)
+		assert.equals("assets/knight1Gris.png",mainCharacter.image())
+		mainCharacter.defiende(true)
+		cambioImagen.normal(mainCharacter)
+		assert.equals("assets/knight1Gris.png",mainCharacter.image())
+		
+		}
+		test "cambio imagen rojo y gris "{
+		assert.equals("assets/knight1.png",mainCharacter.image())
+		mainCharacter.defiende(true)
+		cambioImagen.gris(mainCharacter)
+		assert.equals("assets/knight1Gris.png",mainCharacter.image())
+		cambioImagen.roja(mainCharacter)
+		assert.equals("assets/knight1Rojo.png",mainCharacter.image())
+		cambioImagen.normal(mainCharacter)
+		assert.equals("assets/knight1Gris.png",mainCharacter.image())
+		
+		}
+		test "ataque negativo = 0" {
+			mainCharacter.recibirDano(-10)
+			assert.equals(50,mainCharacter.vida())
+		}
+}
+	
+
